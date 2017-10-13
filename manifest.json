@@ -15,5 +15,11 @@
         "scripts": [
             "background.js"
         ]
+    },
+    "applications": {
+        "gecko": {
+            "id": "nomobilereddit@tossj.addons.mozilla.org",
+            "strict_min_version": "48.0"
+        }
     }
 }
