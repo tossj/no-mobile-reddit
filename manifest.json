@@ -1,7 +1,7 @@
 {
     "manifest_version": 2,
     "name": "No mobile reddit",
-    "version": "0.1",
+    "version": "1.0",
     "description": "Prevents the mobile-friendly version of reddit from loading in the browser.",
     "icons": {
         "48": "no-mobile-reddit.svg",
