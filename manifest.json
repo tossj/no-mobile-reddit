@@ -19,7 +19,8 @@
     "applications": {
         "gecko": {
             "id": "nomobilereddit@tossj.addons.mozilla.org",
-            "strict_min_version": "48.0"
+            "strict_min_version": "54.0"
         }
-    }
+    },
+    "short_name": "NMR"
 }

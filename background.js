@@ -1,6 +1,6 @@
 // set this cookie to make Reddit not show the mobile site on mobile devices
 const noMobileCookie = {
-    url: "https://www.reddit.com",
+    url: "https://.reddit.com",
     name: "mweb-no-redirect",
     value: "1",
     secure: true
@@ -31,7 +31,8 @@ function setCookie() {
 }
 
 (function () {
-    // set the cookie on extension load and for every new tab
-    setCookie();
+    // set the cookie on profile/extension load and for every new tab
+    browser.runtime.onInstalled.addListener(setCookie);
+    browser.runtime.onStartup.addListener(setCookie);
     browser.tabs.onCreated.addListener(setCookie);
 })();
