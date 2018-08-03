@@ -9,12 +9,16 @@
     },
     "permissions": [
         "*://*.reddit.com/",
-        "cookies"
+        "cookies",
+        "storage"
     ],
     "background": {
         "scripts": [
             "background.js"
         ]
+    },
+    "options_ui": {
+        "page": "options/options.html"
     },
     "applications": {
         "gecko": {
