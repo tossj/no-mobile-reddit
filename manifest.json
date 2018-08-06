@@ -12,6 +12,10 @@
         "cookies",
         "storage"
     ],
+    "optional_permissions": [
+        "webRequest",
+        "webRequestBlocking"
+    ],
     "background": {
         "scripts": [
             "background.js"
@@ -23,7 +27,7 @@
     "applications": {
         "gecko": {
             "id": "nomobilereddit@tossj.addons.mozilla.org",
-            "strict_min_version": "54.0"
+            "strict_min_version": "55.0"
         }
     },
     "short_name": "NMR"
