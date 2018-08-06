@@ -1,3 +1,5 @@
+"use strict";
+
 // set this cookie to make Reddit not show the mobile site on mobile devices
 const noMobileCookie = {
     url: "https://.reddit.com",
@@ -91,6 +93,20 @@ function redirect(request) {
 
     // enable/disable redirect on storage change
     browser.storage.onChanged.addListener((changes) => {
-        toggleRedirect(changes.redirect.newValue);
+        if ('redirect' in changes) {
+            if (changes.redirect.oldValue !== changes.redirect.newValue) {
+                toggleRedirect(changes.redirect.newValue);
+            }
+        }
     });
+
+    // open preference page onInstall, once
+    browser.runtime.onInstalled.addListener(() => {
+        browser.storage.local.get({ firstInstall: true })
+            .then((obj) => {
+                if (obj.firstInstall) return browser.runtime.openOptionsPage();
+            }).then(() => {
+                return browser.storage.local.set({ firstInstall: false });
+            }).then(() => { return browser.storage.local.get(); })
+            .then((obj) => { console.log(obj); }, onError)});
 })();

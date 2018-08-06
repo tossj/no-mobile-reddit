@@ -58,7 +58,11 @@ function toggleForm(disabled, form) {
 }
 
 (function () {
-    // checkbox event listener
+    // register checkbox event listener
     const redirectCb = document.getElementById('redirect-reddit');
     redirectCb.addEventListener('change', saveOptions);
+
+    // fill checkbox with value from storage, default to false
+    browser.storage.local.get({ redirect: false })
+        .then((obj) => { redirectCb.checked = obj.redirect; }, onError);
 }());
