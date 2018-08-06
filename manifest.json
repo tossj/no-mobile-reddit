@@ -1,7 +1,7 @@
 {
     "manifest_version": 2,
     "name": "No mobile reddit",
-    "version": "1.0",
+    "version": "1.1",
     "description": "Prevents the mobile-friendly version of reddit from loading in the browser.",
     "icons": {
         "48": "no-mobile-reddit.svg",
@@ -9,17 +9,26 @@
     },
     "permissions": [
         "*://*.reddit.com/",
-        "cookies"
+        "cookies",
+        "storage"
+    ],
+    "optional_permissions": [
+        "webRequest",
+        "webRequestBlocking"
     ],
     "background": {
         "scripts": [
             "background.js"
         ]
     },
+    "options_ui": {
+        "page": "options/options.html",
+        "browser_style": true
+    },
     "applications": {
         "gecko": {
             "id": "nomobilereddit@tossj.addons.mozilla.org",
-            "strict_min_version": "54.0"
+            "strict_min_version": "55.0"
         }
     },
     "short_name": "NMR"

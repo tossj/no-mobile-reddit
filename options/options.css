@@ -1,0 +1,51 @@
+.helper {
+    font-size: 15px;
+    color: #737373;
+    padding-left: 24px;
+    margin-top: 8px;
+}
+
+a {
+    text-decoration: none;
+    color: #0060df;
+}
+
+a:hover {
+    color: #0060df;
+    text-decoration: underline;
+}
+
+a:active {
+    color: #003eaa;
+    text-decoration: underline;
+}
+
+a:focus {
+    box-shadow: 0 0 0 2px #0a84ff, 0 0 0 6px rgba(10, 132, 255, 0.3);
+}
+
+.external-link::after {
+    content: "";
+    background-image: url("./open-in-new.svg");
+    background-repeat: no-repeat;
+    vertical-align: middle;
+    background-size: 16px 16px;
+    fill: #0060df;
+    height: 16px;
+    width: 16px;
+    display: inline-block;
+    margin: 0px 2px;
+}
+
+label {
+    font-size: 15px;
+}
+
+.title--20 {
+    font-size: 17px;
+    font-weight: 500;
+}
+
+.disabled {
+    opacity: 0.4;
+}
