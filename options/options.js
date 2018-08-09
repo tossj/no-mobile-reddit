@@ -5,6 +5,10 @@ function saveOptions(ev) {
 
     // disable checkbox before storage
     toggleForm(true, cb.form);
+    // function to enable form after 700 ms
+    const timedEnable = () => {
+        setTimeout(() => { toggleForm(false, cb.form); }, 700);
+    };
 
     // save storage
     const obj = {};
@@ -14,13 +18,11 @@ function saveOptions(ev) {
     const promise = obj[cb.name]
         ? requestOptionalPermissions()
         : Promise.resolve();
-    promise.then(() => { return browser.storage.local.set(obj); }, onError)
-        .then(() => { return browser.storage.local.get(); }, onError)
-        .then((obj) => { console.log(obj); }, onError)
-        .finally(() => {
-            // enable checkbox
-            setTimeout(() => { toggleForm(false, cb.form); }, 700);
-        });
+    promise.then(() => { return browser.storage.local.set(obj); })
+        .then(() => { return browser.storage.local.get(); })
+        .then((obj) => { console.log(obj); })
+        .catch(onError)
+        .then(timedEnable, timedEnable); // ensure form is re-enabled
 }
 
 /**
@@ -39,7 +41,7 @@ function requestOptionalPermissions() {
             result
                 ? console.log('Permissions granted')
                 : console.error('Permissions denied');
-        }, onError);
+        }).catch(onError);
 }
 
 function onError(error) {
@@ -64,5 +66,6 @@ function toggleForm(disabled, form) {
 
     // fill checkbox with value from storage, default to false
     browser.storage.local.get({ redirect: false })
-        .then((obj) => { redirectCb.checked = obj.redirect; }, onError);
+        .then((obj) => { redirectCb.checked = obj.redirect; })
+        .catch(onError);
 }());
