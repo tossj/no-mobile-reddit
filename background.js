@@ -21,15 +21,15 @@ function onSuccess(result) {
  * of its site on mobile devices.
  */
 function setCookie() {
-    const getCookieStores = browser.cookies.getAllCookieStores();
-    getCookieStores.then((cookieStores) => {
-        // set a cookie for each open cookie store (default, private, etc.)
-        for (const store of cookieStores) {
-            noMobileCookie.storeId = store.id;
-            const promise = browser.cookies.set(noMobileCookie);
-            promise.then(onSuccess, onError);
-        }
-    }, onError);
+    browser.cookies.getAllCookieStores()
+        .then((cookieStores) => {
+            return Promise.all(cookieStores.map((store) => {
+                // set a cookie per open cookie store (default, private, etc.)
+                noMobileCookie.storeId = store.id;
+                return browser.cookies.set(noMobileCookie);
+            }));
+        }).then((cookies) => { console.log(cookies); })
+        .catch(onError);
 }
 
 function toggleRedirect(doRedirect) {
@@ -48,7 +48,8 @@ function toggleRedirect(doRedirect) {
 
         // flush in-memory cache to prevent fetchs from cache w/o redirect
         browser.webRequest.handlerBehaviorChanged()
-            .then(() => { console.log('In-memory cache flush'); }, onError);
+            .then(() => { console.log('In-memory cache flush'); })
+            .catch(onError);
     } else {
         const requestedPermissions = {
             permissions: [ 'webRequest', 'webRequestBlocking' ]
@@ -65,8 +66,8 @@ function toggleRedirect(doRedirect) {
                             result
                                 ? console.log('Permissions revoked')
                                 : console.error('Permissions revoke error');
-                        }, onError);
-                }}, onError);
+                        });
+                }}).catch(onError);
     }
 }
 
@@ -89,7 +90,8 @@ function redirect(request) {
 
     // check if redirecting is enabled, default to false
     browser.storage.local.get({ redirect: false })
-        .then((obj) => { toggleRedirect(obj.redirect); }, onError);
+        .then((obj) => { toggleRedirect(obj.redirect); })
+        .catch(onError);
 
     // enable/disable redirect on storage change
     browser.storage.onChanged.addListener((changes) => {
@@ -108,5 +110,7 @@ function redirect(request) {
             }).then(() => {
                 return browser.storage.local.set({ firstInstall: false });
             }).then(() => { return browser.storage.local.get(); })
-            .then((obj) => { console.log(obj); }, onError)});
+            .then((obj) => { console.log(obj); })
+            .catch(onError);
+    });
 })();
