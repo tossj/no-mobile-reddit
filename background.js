@@ -24,7 +24,7 @@ function setCookie() {
     const getCookieStores = browser.cookies.getAllCookieStores();
     getCookieStores.then((cookieStores) => {
         // set a cookie for each open cookie store (default, private, etc.)
-        for (store of cookieStores) {
+        for (const store of cookieStores) {
             noMobileCookie.storeId = store.id;
             const promise = browser.cookies.set(noMobileCookie);
             promise.then(onSuccess, onError);
