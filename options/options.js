@@ -14,34 +14,12 @@ function saveOptions(ev) {
     const obj = {};
     obj[cb.name] = cb.checked;
 
-    // ask for webRequest permissions first, if setting to true
-    const promise = obj[cb.name]
-        ? requestOptionalPermissions()
-        : Promise.resolve();
-    promise.then(() => { return browser.storage.local.set(obj); })
+    // set cookie
+    browser.storage.local.set(obj)
         .then(() => { return browser.storage.local.get(); })
         .then((obj) => { console.log(obj); })
         .catch(onError)
         .then(timedEnable, timedEnable); // ensure form is re-enabled
-}
-
-/**
- * Requests the WebExtension permissions listed in the optional_permissions
- * field of manifest.json.
- */
-function requestOptionalPermissions() {
-    // webRequest and webRequestBlocking do not prompt the user when requested
-    // seems to also bypass restriction of asking for permissions from embedded
-    // options_ui page set forth in FF v55-61
-    const requestedPermissions = {
-        permissions: [ 'webRequest', 'webRequestBlocking' ]
-    };
-    return browser.permissions.request(requestedPermissions)
-        .then((result) => {
-            result
-                ? console.log('Permissions granted')
-                : console.error('Permissions denied');
-        }).catch(onError);
 }
 
 function onError(error) {
@@ -64,8 +42,8 @@ function toggleForm(disabled, form) {
     const redirectCb = document.getElementById('redirect-reddit');
     redirectCb.addEventListener('change', saveOptions);
 
-    // fill checkbox with value from storage, default to false
-    browser.storage.local.get({ redirect: false })
+    // fill checkbox with value from storage, default to true
+    browser.storage.local.get({ redirect: true })
         .then((obj) => { redirectCb.checked = obj.redirect; })
         .catch(onError);
 }());
