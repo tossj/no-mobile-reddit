@@ -51,23 +51,9 @@ function toggleRedirect(doRedirect) {
             .then(() => { console.log('In-memory cache flush'); })
             .catch(onError);
     } else {
-        const requestedPermissions = {
-            permissions: [ 'webRequest', 'webRequestBlocking' ]
-        };
-        browser.permissions.contains(requestedPermissions)
-            .then((result) => {
-                if (result) {
-                    if (browser.webRequest.onBeforeRequest.hasListener(redirect)) {
-                        browser.webRequest.onBeforeRequest.removeListener(redirect);
-                    }
-                    // revoke webRequest permissions
-                    browser.permissions.remove(requestedPermissions)
-                        .then((result) => {
-                            result
-                                ? console.log('Permissions revoked')
-                                : console.error('Permissions revoke error');
-                        });
-                }}).catch(onError);
+        if (browser.webRequest.onBeforeRequest.hasListener(redirect)) {
+            browser.webRequest.onBeforeRequest.removeListener(redirect);
+        }
     }
 }
 
@@ -88,8 +74,8 @@ function redirect(request) {
     browser.runtime.onStartup.addListener(setCookie);
     browser.tabs.onCreated.addListener(setCookie);
 
-    // check if redirecting is enabled, default to false
-    browser.storage.local.get({ redirect: false })
+    // check if redirecting is enabled, default to true
+    browser.storage.local.get({ redirect: true })
         .then((obj) => { toggleRedirect(obj.redirect); })
         .catch(onError);
 
